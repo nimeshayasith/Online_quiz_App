@@ -6,9 +6,7 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Simpson Alfred
- */
+
 
 public interface IQuestionService {
 
@@ -26,5 +24,13 @@ public interface IQuestionService {
 
     List<Question> getQuestionsForUser(Integer numOfQuestions, String subject);
 
+    List<Question> getQuestionsByAdmin(Long adminId);
 
+    List<Question> getActiveQuestions();
+
+    List<Question> getQuestionsByDifficulty(String difficultyLevel);
+
+    Question toggleQuestionStatus(Long questionId);
+
+    Long countQuestionsBySubject(String subject);
 }

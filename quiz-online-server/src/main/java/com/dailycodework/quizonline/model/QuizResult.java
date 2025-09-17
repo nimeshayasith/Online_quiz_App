@@ -1,4 +1,4 @@
 package com.dailycodework.quizonline.model;
 
-public class Question {
+public class QuizResult {
 }

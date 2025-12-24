@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { fetchQuizForUser } from "../../../utils/QuizService"
-import AnswerOptions from "../../../utils/AnswerOptions"
+import { fetchQuizForUser } from "../../services/QuizService"
+import AnswerOptions from "../common/AnswerOptions"
 
 const Quiz = () => {
 	const [quizQuestions, setQuizQuestions] = useState([

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useAuth } from '../auth/AuthProvider';
+import { useAuth } from '../Auth/AuthProvider';
 import { Shield, HomeIcon, Brain, Plus, Settings, Info, MessageCircle, LogOut, Menu, X } from "lucide-react"
 
 const NavBar= ({ currentPage, setCurrentPage }) => {

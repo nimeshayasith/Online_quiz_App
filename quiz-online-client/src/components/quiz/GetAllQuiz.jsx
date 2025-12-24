@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { deleteQuestion, getAllQuestions } from "../../../utils/QuizService"
+import { deleteQuestion, getAllQuestions } from "../../services/QuizService"
 import { Link } from "react-router-dom"
 import {FaPlus} from "react-icons/fa"
 

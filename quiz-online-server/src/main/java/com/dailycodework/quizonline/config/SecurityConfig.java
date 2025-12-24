@@ -37,9 +37,9 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/health").permitAll() // Railway health check
                         .requestMatchers("/api/quizzes/**").permitAll()
                         .requestMatchers("/api/quiz-results/**").permitAll()
-                        .requestMatchers("/actuator/health", "/actuator/info").permitAll() // Health checks
                         .anyRequest().authenticated()
                 );
 

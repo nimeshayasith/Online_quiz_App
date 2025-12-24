@@ -54,7 +54,11 @@ export const authService = {
 
   // Set user data in storage
   setUserData(userData) {
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
+      const normalizedUser = { 
+    ...userData, 
+    role: userData.role?.toUpperCase() 
+  };
+    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(normalizedUser));
     if (userData.token) {
       localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, userData.token);
     }

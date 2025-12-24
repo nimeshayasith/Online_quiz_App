@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react';
 import { useAuth } from '../Auth/AuthProvider';
+import {authService} from '../../services/authService';
 
 
 const SignUp = ({ onPageChange }) => {
@@ -41,33 +42,37 @@ const SignUp = ({ onPageChange }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newErrors = validateForm();
-    
-    if (Object.keys(newErrors).length === 0) {
-      setIsLoading(true);
-      try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        login({
-          id: Date.now(),
-          username: formData.username,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          role: formData.role
-        });
-        onPageChange('home');
-      } catch (error) {
-        console.error('Signup error:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setErrors(newErrors);
+  e.preventDefault();
+  const newErrors = validateForm();
+
+  if (Object.keys(newErrors).length === 0) {
+    setIsLoading(true);
+    try {
+      // Transform data to match backend DTO
+      const registrationData = {
+        userName: formData.username, // backend expects userName (camelCase)
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        phoneNumber: formData.phoneNumber,
+        role: formData.role.toUpperCase() // backend expects STUDENT or ADMIN
+      };
+
+      // Call backend register API
+      const userData = await authService.register(registrationData);
+
+      login(userData); // from AuthProvider
+      onPageChange('home');
+    } catch (error) {
+      setErrors({ general: error.message });
+    } finally {
+      setIsLoading(false);
     }
-  };
+  } else {
+    setErrors(newErrors);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

@@ -1,6 +1,7 @@
-import  { useState } from 'react';
-import { Shield, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
+import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../Auth/AuthProvider';
+import { authService } from '../../services/authService';
 
 const SignIn = ({ onPageChange }) => {
   const { login } = useAuth();
@@ -17,31 +18,28 @@ const SignIn = ({ onPageChange }) => {
     setError('');
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (formData.email && formData.password) {
-      setIsLoading(true);
-      try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        login({
-          id: Date.now(),
-          email: formData.email,
-          firstName: 'John',
-          lastName: 'Doe',
-          role: formData.email.includes('admin') ? 'admin' : 'student'
-        });
-        onPageChange('home');
-      } catch (error) {
-        setError('Login failed. Please try again.');
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setError('Please enter both email and password');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (formData.email && formData.password) {
+    setIsLoading(true);
+    try {
+      // Call backend login API
+      const userData = await authService.login({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      login(userData); // from AuthProvider
+      onPageChange('home');
+    } catch (error) {
+      setError(error.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-  };
+  } else {
+    setError('Please enter both email and password');
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -67,6 +65,7 @@ const SignIn = ({ onPageChange }) => {
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-3 bg-slate-700/50 border border-purple-500/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
                   placeholder="john@example.com"
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -82,11 +81,13 @@ const SignIn = ({ onPageChange }) => {
                   onChange={handleChange}
                   className="w-full pl-10 pr-10 py-3 bg-slate-700/50 border border-purple-500/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
                   placeholder="Enter your password"
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-400"
+                  disabled={isLoading}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -94,23 +95,31 @@ const SignIn = ({ onPageChange }) => {
             </div>
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm">
-                {error}
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                <span>{error}</span>
               </div>
             )}
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+              className="w-full py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:transform-none disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Signing In...
+                </div>
+              ) : (
+                'Sign In'
+              )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-gray-400 mb-2">
-              Demo accounts:
+              Demo accounts for testing:
             </p>
             <div className="text-xs text-gray-500 space-y-1">
               <div>Student: student@demo.com</div>
@@ -123,6 +132,7 @@ const SignIn = ({ onPageChange }) => {
             <button
               onClick={() => onPageChange('signup')}
               className="text-purple-400 hover:text-purple-300 transition-colors"
+              disabled={isLoading}
             >
               Sign Up
             </button>

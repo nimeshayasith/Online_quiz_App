@@ -14,9 +14,9 @@ const NavBar= ({ currentPage, setCurrentPage }) => {
 
   const navItems = [
     { key: 'home', label: 'Home', icon: HomeIcon, show: true },
-    { key: 'quiz-stepper', label: 'Take Quiz', icon: Brain, show: isAuthenticated && user?.role === 'student' },
-    { key: 'create-quiz', label: 'Create Quiz', icon: Plus, show: isAuthenticated && user?.role === 'admin' },
-    { key: 'manage-quiz', label: 'Manage Quizzes', icon: Settings, show: isAuthenticated && user?.role === 'admin' },
+    { key: 'quiz-stepper', label: 'Take Quiz', icon: Brain, show: isAuthenticated && user?.role?.toUpperCase() === 'STUDENT' },
+    { key: 'create-quiz', label: 'Create Quiz', icon: Plus, show: isAuthenticated && user?.role?.toUpperCase() === 'ADMIN' },
+    { key: 'manage-quiz', label: 'Manage Quizzes', icon: Settings, show: isAuthenticated && user?.role?.toUpperCase() === 'ADMIN' },
     { key: 'about', label: 'About Us', icon: Info, show: true },
     { key: 'contact', label: 'Contact', icon: MessageCircle, show: true }
   ];

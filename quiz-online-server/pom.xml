@@ -77,11 +77,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- H2 Database for testing and production (free tier) -->
+        <!-- H2 Database for testing -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- Actuator for health checks (Railway) -->

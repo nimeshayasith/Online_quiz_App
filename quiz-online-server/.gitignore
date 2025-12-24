@@ -23,4 +23,4 @@ Thumbs.db
 
 # Environment / secrets
 application-*.yml
-application-*.properties
+application.properties

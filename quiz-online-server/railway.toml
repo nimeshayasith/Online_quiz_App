@@ -1,0 +1,12 @@
+# Railway Configuration File
+# This file helps Railway detect and configure your Spring Boot application
+
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "java -Dserver.port=$PORT -Dspring.profiles.active=production -jar target/quiz-online-0.0.1-SNAPSHOT.jar"
+healthcheckPath = "/actuator/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10

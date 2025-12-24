@@ -1,0 +1,6 @@
+{
+  "env": {
+    "SPRING_PROFILES_ACTIVE": "production",
+    "JAVA_TOOL_OPTIONS": "-XX:MaxRAMPercentage=75.0 -XX:+UseContainerSupport"
+  }
+}

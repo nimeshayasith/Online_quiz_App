@@ -1,53 +1,98 @@
-# CyberQuiz Pro - Frontend
+# 🎓 Online Quiz Application
 
-A modern, interactive cybersecurity learning platform built with React and Tailwind CSS.
+A full-stack web application for creating and taking online quizzes, built for the 4th Semester Web Application Development module. This project demonstrates modern web development practices with a React frontend and Spring Boot backend, deployed on cloud platforms.
 
-## Features
+## 🌐 Live Demo
 
-- **User Authentication**: Role-based access for Students and Admins
-- **Interactive Quiz System**: Timed quizzes with instant feedback
-- **Admin Dashboard**: Create and manage cybersecurity questions
-- **Student Progress Tracking**: Performance analytics and history
-- **Responsive Design**: Modern cyber-themed UI with dark mode
-- **Real-time Features**: Live timer, progress tracking, and notifications
+- **Frontend**: [https://online-quiz-app-seven-plum.vercel.app](https://online-quiz-app-seven-plum.vercel.app)
+- **Backend**: [https://stellar-analysis-production-3ade.up.railway.app](https://stellar-analysis-production-3ade.up.railway.app)
 
-## Tech Stack
+## ✨ Key Features
 
-- **Framework**: React 18 with Vite
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **HTTP Client**: Axios
-- **Routing**: React Router DOM
-- **Animations**: Framer Motion
+### For Students
+- 📝 **Take Quizzes**: Interactive quiz-taking experience with multiple choice questions
+- ⏱️ **Timer System**: Timed quizzes with automatic submission
+- 📊 **Instant Results**: View scores and correct answers immediately after submission
+- 📈 **Progress Tracking**: Track quiz history and performance over time
+- 🔐 **Secure Authentication**: JWT-based authentication system
+
+### For Administrators
+- ➕ **Create Questions**: Add new quiz questions with multiple subjects
+- ✏️ **Manage Questions**: Update and delete existing questions
+- 📋 **Quiz Management**: Organize questions by subject and difficulty
+- 👥 **User Management**: Monitor user registrations and activities
+
+### Special Features
+- 🎨 **Modern UI/UX**: Cyber-themed interface with smooth animations
+- 📱 **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
+- 🌙 **Dark Mode**: Eye-friendly dark theme
+- 🔄 **Real-time Updates**: Live feedback and notifications
+- ☁️ **Cloud Deployment**: Hosted on Vercel (frontend) and Railway (backend)
+- 🗄️ **Database Integration**: MySQL database for persistent storage
+- 🔒 **Spring Security**: Protected API endpoints with role-based access
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Framework**: React 18.3.1
+- **Build Tool**: Vite 7.3.0
+- **Styling**: Tailwind CSS 3.4.17
+- **Routing**: React Router DOM 7.1.1
+- **HTTP Client**: Axios 1.7.9
+- **Icons**: Lucide React 0.469.0
 - **Notifications**: React Hot Toast
+- **Deployment**: Vercel
 
-## Project Structure
+### Backend
+- **Framework**: Spring Boot 3.2.0
+- **Language**: Java 17
+- **Build Tool**: Maven
+- **Security**: Spring Security with JWT
+- **Database**: MySQL 8
+- **ORM**: Hibernate/JPA
+- **API Style**: RESTful
+- **Deployment**: Railway
+
+### Database
+- **Type**: MySQL 8.0
+- **Hosting**: Railway MySQL
+- **Connection Pool**: HikariCP
+
+## 📁 Project Structure
 
 ```
-src/
-├── components/          # Reusable UI components
-│   ├── common/         # Shared components
-│   ├── auth/           # Authentication components
-│   ├── quiz/           # Quiz-related components
-│   ├── admin/          # Admin-specific components
-│   ├── student/        # Student-specific components
-│   └── ui/             # Base UI components
-├── pages/              # Page components
-├── hooks/              # Custom React hooks
-├── services/           # API services
-├── utils/              # Utility functions
-├── context/            # React Context providers
-├── assets/             # Static assets
-└── data/               # Mock data and constants
+Online_quiz_App/
+├── quiz-online-client/         # React Frontend
+│   ├── src/
+│   │   ├── components/        # Reusable components
+│   │   │   ├── admin/        # Admin features
+│   │   │   ├── Auth/         # Authentication
+│   │   │   ├── common/       # Shared components
+│   │   │   ├── quiz/         # Quiz components
+│   │   │   └── ui/           # UI components
+│   │   ├── pages/            # Page components
+│   │   ├── services/         # API services
+│   │   ├── hooks/            # Custom React hooks
+│   │   └── utils/            # Helper functions
+│   ├── public/               # Static assets
+│   └── package.json
+│
+└── quiz-online-server/        # Spring Boot Backend
+    ├── src/
+    │   ├── main/
+    │   │   ├── java/com/dailycodework/quizonline/
+    │   │   │   ├── config/          # Configuration classes
+    │   │   │   ├── controller/      # REST Controllers
+    │   │   │   ├── dto/             # Data Transfer Objects
+    │   │   │   ├── model/           # Entity classes
+    │   │   │   ├── repository/      # JPA Repositories
+    │   │   │   ├── service/         # Business logic
+    │   │   │   └── exception/       # Custom exceptions
+    │   │   └── resources/
+    │   │       └── application-production.properties
+    │   └── test/                    # Unit tests
+    └── pom.xml
 ```
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js >= 16.0.0
-- npm >= 8.0.0
-- Backend API running on http://localhost:9192
 
 ### Installation
 

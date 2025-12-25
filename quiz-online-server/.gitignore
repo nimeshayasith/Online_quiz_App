@@ -21,6 +21,6 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Environment / secrets
-application-*.yml
-application.properties
+# # Environment / secrets
+# application-*.yml
+# application.properties

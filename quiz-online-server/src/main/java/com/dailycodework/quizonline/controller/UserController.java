@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://online-quiz-app-seven-plum.vercel.app"
+})
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

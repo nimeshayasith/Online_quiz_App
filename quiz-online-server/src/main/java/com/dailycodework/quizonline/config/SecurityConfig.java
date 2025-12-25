@@ -49,23 +49,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Build allowed origins list
-        List<String> allowedOrigins = new ArrayList<>(Arrays.asList(
-                "http://localhost:5173",
-                "http://localhost:5174", 
-                "http://localhost:3000",
-                "https://online-quiz-app-seven-plum.vercel.app"  // Production frontend
-        ));
-        
-        // Add production frontend URL from environment variable if present
-        if (frontendUrl != null && !frontendUrl.isEmpty()) {
-            allowedOrigins.add(frontendUrl);
-        }
-        
-        // Allow all Vercel deployments (for preview branches)
-        allowedOrigins.add("https://*.vercel.app");
-        
-        configuration.setAllowedOriginPatterns(allowedOrigins);
+        // Allow all origins (simplified for deployment)
+        configuration.addAllowedOriginPattern("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

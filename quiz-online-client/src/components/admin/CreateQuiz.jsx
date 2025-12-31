@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { CheckCircle, Plus, Trash2 } from "lucide-react";
-
+import { CheckCircle, Plus, Trash2, AlertCircle } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth";
+import { createQuestion } from "../../services/QuizService";
 
 
 // Create Quiz Component (for Admin)
 const CreateQuiz = () => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     question: '',
     subject: '',
@@ -24,22 +26,56 @@ const CreateQuiz = () => {
   ]);
   const [newSubject, setNewSubject] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate API call
-    console.log('Creating question:', formData);
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-    
-    // Reset form
-    setFormData({
-      question: '',
-      subject: '',
-      questionType: 'single',
-      choices: ['A. ', 'B. '],
-      correctAnswers: ['']
-    });
+    setError('');
+    setIsLoading(true);
+
+    try {
+      // Parse correct answers
+      const correctAnswersArray = formData.correctAnswers[0]
+        .split(',')
+        .map(ans => ans.trim().toUpperCase())
+        .filter(ans => ans.length > 0);
+
+      // Prepare question data for backend
+      const questionData = {
+        question: formData.question,
+        subject: formData.subject === 'new' ? newSubject : formData.subject,
+        questionType: formData.questionType,
+        choices: formData.choices,
+        correctAnswers: correctAnswersArray,
+        isActive: true
+      };
+
+      console.log('Creating question:', questionData);
+      
+      // Call backend API to create question
+      const response = await createQuestion(questionData);
+      
+      if (response) {
+        setIsSubmitted(true);
+        setTimeout(() => setIsSubmitted(false), 3000);
+        
+        // Reset form
+        setFormData({
+          question: '',
+          subject: '',
+          questionType: 'single',
+          choices: ['A. ', 'B. '],
+          correctAnswers: ['']
+        });
+        setNewSubject('');
+      }
+    } catch (err) {
+      console.error('Error creating question:', err);
+      setError(err.message || 'Failed to create question. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -84,6 +120,15 @@ const CreateQuiz = () => {
             <div className="flex items-center text-green-400">
               <CheckCircle className="h-5 w-5 mr-2" />
               Question created successfully!
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+            <div className="flex items-center text-red-400">
+              <AlertCircle className="h-5 w-5 mr-2" />
+              {error}
             </div>
           </div>
         )}
@@ -202,9 +247,10 @@ const CreateQuiz = () => {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity transform hover:scale-[1.02] active:scale-[0.98]"
+                disabled={isLoading}
+                className="px-8 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Create Question
+                {isLoading ? 'Creating Question...' : 'Create Question'}
               </button>
             </div>
           </form>

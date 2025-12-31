@@ -1,33 +1,47 @@
-import React, { useState } from 'react';
-import { Edit, Trash2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Edit, Trash2, AlertCircle, Loader } from 'lucide-react';
+import { getAllQuestions, deleteQuestion } from '../../services/QuizService';
 
 
-const ManageQuiz = () => {
-  const [questions] = useState([
-    {
-      id: 1,
-      question: "What is the most common type of cyber attack?",
-      subject: "Network Security",
-      choices: ["A. DDoS", "B. Phishing", "C. Malware", "D. SQL Injection"],
-      correctAnswers: ["B"],
-      questionType: "single"
-    },
-    {
-      id: 2,
-      question: "Which encryption algorithm is considered most secure?",
-      subject: "Cryptography",
-      choices: ["A. DES", "B. AES", "C. RC4", "D. MD5"],
-      correctAnswers: ["B"],
-      questionType: "single"
+const ManageQuiz = ({ onEditQuestion }) => {
+  const [questions, setQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  const fetchQuestions = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getAllQuestions();
+      setQuestions(data || []);
+    } catch (err) {
+      setError('Failed to load questions');
+      console.error('Error fetching questions:', err);
+    } finally {
+      setIsLoading(false);
     }
-  ]);
-
-  const handleEdit = (id) => {
-    console.log('Edit question:', id);
   };
 
-  const handleDelete = (id) => {
-    console.log('Delete question:', id);
+  const handleEdit = (question) => {
+    // For now, just log - we'll implement edit functionality later
+    console.log('Edit question:', question);
+    alert(`Edit functionality coming soon!\nQuestion ID: ${question.id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this question?')) {
+      try {
+        await deleteQuestion(id);
+        // Refresh the questions list
+        await fetchQuestions();
+      } catch (err) {
+        setError('Failed to delete question');
+        console.error('Error deleting question:', err);
+      }
+    }
   };
 
   return (
@@ -46,7 +60,25 @@ const ManageQuiz = () => {
           </div>
         </div>
 
-        <div className="space-y-6">
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
+            <div className="flex items-center text-red-400">
+              <AlertCircle className="h-5 w-5 mr-2" />
+              {error}
+            </div>
+          </div>
+        )}
+
+        {isLoading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader className="h-8 w-8 text-purple-400 animate-spin" />
+          </div>
+        ) : questions.length === 0 ? (
+          <div className="bg-slate-800/50 backdrop-blur-lg rounded-xl border border-purple-500/20 p-12 text-center">
+            <p className="text-gray-400 text-lg">No questions found. Create your first question!</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
           {questions.map((question, index) => (
             <div key={question.id} className="bg-slate-800/50 backdrop-blur-lg rounded-xl border border-purple-500/20 p-6">
               <div className="flex justify-between items-start mb-4">
@@ -87,7 +119,7 @@ const ManageQuiz = () => {
 
                 <div className="flex space-x-2 ml-4">
                   <button
-                    onClick={() => handleEdit(question.id)}
+                    onClick={() => handleEdit(question)}
                     className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors flex items-center space-x-1"
                   >
                     <Edit className="h-4 w-4" />
@@ -104,7 +136,8 @@ const ManageQuiz = () => {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

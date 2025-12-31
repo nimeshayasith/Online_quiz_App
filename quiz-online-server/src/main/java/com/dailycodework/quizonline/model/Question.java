@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "questions")
+@Table(name = "question")
 public class Question {
 
     @Id
@@ -34,19 +34,21 @@ public class Question {
     @Column(name = "question_type")
     private String questionType;
 
-    @ElementCollection
-    @CollectionTable(name = "question_choices", joinColumns = @JoinColumn(name = "question_id"))
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "question_choices", 
+                     joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "choice")
     private List<String> choices;
 
-    @ElementCollection
-    @CollectionTable(name = "question_correct_answers", joinColumns = @JoinColumn(name = "question_id"))
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "question_correct_answers", 
+                     joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "correct_answer")
     private List<String> correctAnswers;
 
     // Many-to-one relationship with Admin (Many questions can be created by one admin)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", referencedColumnName = "user_id")
+    @JoinColumn(name = "created_by", referencedColumnName = "user_id", nullable = true)
     private Admin createdBy;
 
     @Column(name = "created_at")

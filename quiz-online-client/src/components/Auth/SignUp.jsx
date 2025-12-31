@@ -14,7 +14,11 @@ const SignUp = ({ onPageChange }) => {
     password: '',
     confirmPassword: '',
     phoneNumber: '',
-    role: 'student'
+    role: 'student',
+    // Admin-specific fields
+    department: '',
+    qualification: '',
+    experienceYears: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
@@ -38,6 +42,16 @@ const SignUp = ({ onPageChange }) => {
       newErrors.confirmPassword = 'Passwords do not match';
     }
     if (!formData.phoneNumber.trim()) newErrors.phoneNumber = 'Phone number is required';
+    
+    // Validate admin-specific fields when role is admin
+    if (formData.role === 'admin') {
+      if (!formData.department.trim()) newErrors.department = 'Department is required for teachers';
+      if (!formData.qualification.trim()) newErrors.qualification = 'Qualification is required for teachers';
+      if (!formData.experienceYears || formData.experienceYears <= 0) {
+        newErrors.experienceYears = 'Experience years must be a positive number';
+      }
+    }
+    
     return newErrors;
   };
 
@@ -58,6 +72,13 @@ const SignUp = ({ onPageChange }) => {
         phoneNumber: formData.phoneNumber,
         role: formData.role.toUpperCase() // backend expects STUDENT or ADMIN
       };
+
+      // Add admin-specific fields if role is admin
+      if (formData.role === 'admin') {
+        registrationData.department = formData.department;
+        registrationData.qualification = formData.qualification;
+        registrationData.experienceYears = parseInt(formData.experienceYears, 10);
+      }
 
       // Call backend register API
       const userData = await authService.register(registrationData);
@@ -214,6 +235,51 @@ const SignUp = ({ onPageChange }) => {
                 <option value="admin">Teacher/Admin</option>
               </select>
             </div>
+
+            {/* Admin-specific fields */}
+            {formData.role === 'admin' && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Department</label>
+                  <input
+                    type="text"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 bg-slate-700/50 border border-purple-500/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
+                    placeholder="e.g., Computer Science, Mathematics"
+                  />
+                  {errors.department && <p className="text-red-400 text-xs mt-1">{errors.department}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Qualification</label>
+                  <input
+                    type="text"
+                    name="qualification"
+                    value={formData.qualification}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 bg-slate-700/50 border border-purple-500/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
+                    placeholder="e.g., M.Sc, Ph.D., B.Ed"
+                  />
+                  {errors.qualification && <p className="text-red-400 text-xs mt-1">{errors.qualification}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Years of Experience</label>
+                  <input
+                    type="number"
+                    name="experienceYears"
+                    value={formData.experienceYears}
+                    onChange={handleChange}
+                    min="0"
+                    className="w-full px-4 py-2 bg-slate-700/50 border border-purple-500/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
+                    placeholder="e.g., 5"
+                  />
+                  {errors.experienceYears && <p className="text-red-400 text-xs mt-1">{errors.experienceYears}</p>}
+                </div>
+              </>
+            )}
 
             <button
               type="submit"

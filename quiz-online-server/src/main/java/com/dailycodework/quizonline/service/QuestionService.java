@@ -23,8 +23,16 @@ public class QuestionService implements IQuestionService {
     private final AdminRepository adminRepository;
 
     @Override
+    @Transactional
     public Question createQuestion(Question question) {
-        return questionRepository.save(question);
+        // Ensure the question has default values
+        if (question.getIsActive() == null) {
+            question.setIsActive(true);
+        }
+        
+        // Save and flush to ensure the question ID is generated before child collections
+        Question savedQuestion = questionRepository.saveAndFlush(question);
+        return savedQuestion;
     }
 
     // Enhanced method to create question with admin association

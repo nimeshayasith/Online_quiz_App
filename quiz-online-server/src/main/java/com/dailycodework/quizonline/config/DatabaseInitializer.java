@@ -118,10 +118,11 @@ public class DatabaseInitializer implements CommandLineRunner {
             // Read and execute schema.sql if it exists in resources
             ClassPathResource resource = new ClassPathResource("schema.sql");
             if (resource.exists()) {
-                String sql = new BufferedReader(
-                    new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))
-                    .lines()
-                    .collect(Collectors.joining("\n"));
+                String sql;
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
+                    sql = reader.lines().collect(Collectors.joining("\n"));
+                }
                 
                 // Split by semicolon and execute each statement
                 String[] statements = sql.split(";");

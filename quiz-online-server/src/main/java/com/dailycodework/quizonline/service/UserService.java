@@ -96,8 +96,7 @@ public class UserService implements IUserService {
         return userRepository.findByUserName(userName);
     }
 
-    @Override
-    public Optional<User> findById(Long userId) {
+    @Override    @SuppressWarnings("null")    public Optional<User> findById(Long userId) {
         return userRepository.findById(userId);
     }
 
@@ -125,8 +124,7 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public UserResponseDto updateUser(Long userId, UserRegistrationDto updateDto) {
+    @Override    @SuppressWarnings("null")    public UserResponseDto updateUser(Long userId, UserRegistrationDto updateDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -155,6 +153,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @SuppressWarnings("null")
     public void deleteUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new RuntimeException("User not found");

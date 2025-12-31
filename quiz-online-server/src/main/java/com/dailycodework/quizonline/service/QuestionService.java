@@ -36,6 +36,7 @@ public class QuestionService implements IQuestionService {
     }
 
     // Enhanced method to create question with admin association
+    @SuppressWarnings("null")
     public Question createQuestionWithAdmin(Question question, Long adminId) {
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() -> new RuntimeException("Admin not found"));
@@ -58,6 +59,7 @@ public class QuestionService implements IQuestionService {
 
     @Override
     @Transactional(readOnly = true)
+    @SuppressWarnings("null")
     public Optional<Question> getQuestionById(Long id) {
         return questionRepository.findById(id);
     }
@@ -87,6 +89,7 @@ public class QuestionService implements IQuestionService {
     }
 
     @Override
+    @SuppressWarnings("null")
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
     }
@@ -119,6 +122,7 @@ public class QuestionService implements IQuestionService {
         return questionRepository.countBySubject(subject);
     }
 
+    @SuppressWarnings("null")
     public Question toggleQuestionStatus(Long questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question not found"));

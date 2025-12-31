@@ -26,9 +26,10 @@ const ManageQuiz = ({ onEditQuestion }) => {
   };
 
   const handleEdit = (question) => {
-    // For now, just log - we'll implement edit functionality later
-    console.log('Edit question:', question);
-    alert(`Edit functionality coming soon!\nQuestion ID: ${question.id}`);
+    // Call parent component to change page to edit mode
+    if (onEditQuestion) {
+      onEditQuestion(question.id);
+    }
   };
 
   const handleDelete = async (id) => {

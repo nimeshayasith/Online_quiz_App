@@ -21,6 +21,7 @@ public class QuizResultService implements IQuizResultService {
     private final StudentRepository studentRepository;
 
     @Override
+    @SuppressWarnings("null")
     public QuizResult saveQuizResult(QuizResult quizResult) {
         QuizResult savedResult = quizResultRepository.save(quizResult);
 
@@ -52,6 +53,7 @@ public class QuizResultService implements IQuizResultService {
 
     @Override
     @Transactional(readOnly = true)
+    @SuppressWarnings("null")
     public Optional<QuizResult> getQuizResultById(Long id) {
         return quizResultRepository.findById(id);
     }
@@ -81,11 +83,13 @@ public class QuizResultService implements IQuizResultService {
     }
 
     @Override
+    @SuppressWarnings("null")
     public void deleteQuizResult(Long id) {
         quizResultRepository.deleteById(id);
     }
 
     @Override
+    @SuppressWarnings("null")
     public QuizResult createQuizResult(Long studentId, String subject, Integer totalQuestions,
                                        Integer correctAnswers, Integer timeTakenSeconds) {
         Student student = studentRepository.findById(studentId)

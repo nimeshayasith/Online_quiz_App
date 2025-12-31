@@ -11,17 +11,29 @@ import QuizStepper from './components/quiz/QuizStepper';
 import TakeQuiz from './components/quiz/TakeQuiz';
 import CreateQuiz from './components/admin/CreateQuiz';
 import ManageQuiz from './components/admin/ManageQuiz';
+import UpdateQuestion from './components/admin/UpdateQuestion';
 
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [quizParams, setQuizParams] = useState(null);
+  const [editQuestionId, setEditQuestionId] = useState(null);
 
   const handlePageChange = (page, params = null) => {
     setCurrentPage(page);
     if (params) {
       setQuizParams(params);
     }
+  };
+
+  const handleEditQuestion = (questionId) => {
+    setEditQuestionId(questionId);
+    setCurrentPage('edit-question');
+  };
+
+  const handleBackToManage = () => {
+    setEditQuestionId(null);
+    setCurrentPage('manage-quiz');
   };
 
   const renderPage = () => {
@@ -39,7 +51,13 @@ const App = () => {
       case 'create-quiz':
         return <CreateQuiz />;
       case 'manage-quiz':
-        return <ManageQuiz />;
+        return <ManageQuiz onEditQuestion={handleEditQuestion} />;
+      case 'edit-question':
+        return <UpdateQuestion 
+          questionId={editQuestionId} 
+          onBack={handleBackToManage}
+          onSuccess={handleBackToManage}
+        />;
       case 'about':
         return <About />;
       case 'contact':

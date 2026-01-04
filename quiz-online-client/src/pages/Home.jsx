@@ -1,4 +1,4 @@
-import { Play, Plus, Settings, Star, Zap, Layers } from 'lucide-react';
+import { Play, Plus, Settings, Star, Zap, Layers, Upload } from 'lucide-react';
 import { useAuth } from "../components/Auth/AuthProvider";
 
 const Home = ({ onPageChange }) => {
@@ -74,6 +74,13 @@ const Home = ({ onPageChange }) => {
                       >
                         <Plus className="h-5 w-5" />
                         <span>Create Quiz</span>
+                      </button>
+                      <button 
+                        onClick={() => onPageChange('bulk-upload')}
+                        className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold rounded-lg hover:opacity-90 transition-all flex items-center justify-center space-x-2"
+                      >
+                        <Upload className="h-5 w-5" />
+                        <span>Bulk Upload</span>
                       </button>
                       <button 
                         onClick={() => onPageChange('manage-quiz')}

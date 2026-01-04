@@ -12,6 +12,7 @@ import TakeQuiz from './components/quiz/TakeQuiz';
 import CreateQuiz from './components/admin/CreateQuiz';
 import ManageQuiz from './components/admin/ManageQuiz';
 import UpdateQuestion from './components/admin/UpdateQuestion';
+import BulkUploadQuiz from './components/admin/BulkUploadQuiz';
 
 
 const App = () => {
@@ -58,6 +59,8 @@ const App = () => {
           onBack={handleBackToManage}
           onSuccess={handleBackToManage}
         />;
+      case 'bulk-upload':
+        return <BulkUploadQuiz onBack={() => handlePageChange('home')} />;
       case 'about':
         return <About />;
       case 'contact':

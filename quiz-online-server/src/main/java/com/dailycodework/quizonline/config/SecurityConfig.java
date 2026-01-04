@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/quizzes/**").permitAll()
                         .requestMatchers("/api/quiz-results/**").permitAll()
+                        .requestMatchers("/api/bulk-upload/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

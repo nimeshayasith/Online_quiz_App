@@ -89,3 +89,54 @@ export const deleteQuestion = async(id) =>{
     throw new Error(message);
   }
 }
+
+export const uploadQuestionsCSV = async(file, adminId) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('adminId', adminId);
+
+    const response = await axios.post(
+      `${API_BASE_URL}/bulk-upload/questions`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error uploading CSV:', error);
+    const message = error.response?.data?.message || 
+                    error.response?.data || 
+                    'Failed to upload CSV file';
+    throw new Error(message);
+  }
+};
+
+export const downloadCSVTemplate = async() => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/bulk-upload/template`,
+      {
+        responseType: 'text',
+      }
+    );
+    
+    // Create a blob from the CSV text
+    const blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'quiz_bulk_upload_template.csv');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error downloading template:', error);
+    const message = error.response?.data || error.message || 'Failed to download template';
+    throw new Error(message);
+  }
+};

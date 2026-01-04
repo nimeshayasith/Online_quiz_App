@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useAuth } from '../Auth/AuthProvider';
-import { Shield, HomeIcon, Brain, Plus, Settings, Info, MessageCircle, LogOut, Menu, X } from "lucide-react"
+import { Shield, HomeIcon, Brain, Plus, Upload, Settings, Info, MessageCircle, LogOut, Menu, X } from "lucide-react"
 
 const NavBar= ({ currentPage, setCurrentPage }) => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -16,6 +16,7 @@ const NavBar= ({ currentPage, setCurrentPage }) => {
     { key: 'home', label: 'Home', icon: HomeIcon, show: true },
     { key: 'quiz-stepper', label: 'Take Quiz', icon: Brain, show: isAuthenticated && user?.role?.toUpperCase() === 'STUDENT' },
     { key: 'create-quiz', label: 'Create Quiz', icon: Plus, show: isAuthenticated && user?.role?.toUpperCase() === 'ADMIN' },
+    { key: 'bulk-upload', label: 'Bulk Upload', icon: Upload, show: isAuthenticated && user?.role?.toUpperCase() === 'ADMIN' },
     { key: 'manage-quiz', label: 'Manage Quizzes', icon: Settings, show: isAuthenticated && user?.role?.toUpperCase() === 'ADMIN' },
     { key: 'about', label: 'About Us', icon: Info, show: true },
     { key: 'contact', label: 'Contact', icon: MessageCircle, show: true }
